@@ -5,150 +5,111 @@
     Layout = "~/Views/Shared/_nakazade.cshtml";
 }
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ShortNotes)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DatePosted)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Source)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsVerified)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShortNotes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DatePosted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Source)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsVerified)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.VideoId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.VideoId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.VideoId })
-            </td>
-        </tr>
-    }
-
-</table>
-
 <div class="row">
-    <div class="col-6 col-sm-6 col-lg-6">
-        <div class="card author-box card-primary">
+    <div class="col-12 col-md-12 col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4> UPLOAD VIDEO</h4>
+            </div>
             <div class="card-body">
-                <div class="author-box-left">
-                    <img alt="image" src="assets/img/users/user-1.png" class="rounded-circle author-box-picture">
-                    <div class="clearfix"></div>
-                    <a href="#" class="btn btn-primary mt-3 follow-btn" data-follow-action="alert('follow clicked');"
-                       data-unfollow-action="alert('unfollow clicked');">Follow</a>
-                </div>
-                <div class="author-box-details">
-                    <div class="author-box-name">
-                        <a href="#">Sarah Smith</a>
-                    </div>
-                    <div class="author-box-job">Web Developer</div>
-                    <div class="author-box-description">
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-
-                        </p>
-                    </div>
-                    <div class="mb-2 mt-3">
-                        <div class="text-small font-weight-bold">Follow Sarah On</div>
-                    </div>
-                    <a href="#" class="btn btn-social-icon mr-1 btn-facebook">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="#" class="btn btn-social-icon mr-1 btn-twitter">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="#" class="btn btn-social-icon mr-1 btn-github">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="#" class="btn btn-social-icon mr-1 btn-instagram">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <div class="w-100 d-sm-none"></div>
-                    <div class="float-right mt-sm-0 mt-3">
-                        <a href="#" class="btn">View Posts <i class="fas fa-chevron-right"></i></a>
-                    </div>
-                </div>
+                <button type="button" class="btn btn-primary" data-toggle="modal"
+                        data-target="#exampleModalCenter">
+                    Vertically
+                    Centered
+                </button>
             </div>
         </div>
     </div>
-    <div class="col-6 col-sm-6 col-lg-6">
-        <div class="card author-box card-primary">
-            <div class="card-body">
-                <div class="author-box-left">
-                    <img alt="image" src="assets/img/users/user-1.png" class="rounded-circle author-box-picture">
-                    <div class="clearfix"></div>
-                    <a href="#" class="btn btn-primary mt-3 follow-btn" data-follow-action="alert('follow clicked');"
-                       data-unfollow-action="alert('unfollow clicked');">Follow</a>
-                </div>
-                <div class="author-box-details">
-                    <div class="author-box-name">
-                        <a href="#">Sarah Smith</a>
-                    </div>
-                    <div class="author-box-job">Web Developer</div>
-                    <div class="author-box-description">
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 
-                        </p>
-                    </div>
-                    <div class="mb-2 mt-3">
-                        <div class="text-small font-weight-bold">Follow Sarah On</div>
-                    </div>
-                    <a href="#" class="btn btn-social-icon mr-1 btn-facebook">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="#" class="btn btn-social-icon mr-1 btn-twitter">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="#" class="btn btn-social-icon mr-1 btn-github">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="#" class="btn btn-social-icon mr-1 btn-instagram">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <div class="w-100 d-sm-none"></div>
-                    <div class="float-right mt-sm-0 mt-3">
-                        <a href="#" class="btn">View Posts <i class="fas fa-chevron-right"></i></a>
-                    </div>
+    <div class="modal fadeIn" id="exampleModalCenter" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">VIDEO UPLOAD </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
+                <div class="modal-body">
+                    @using (Html.BeginForm("Index", "Videos", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            <label>Choose File:</label>
+                            <div class="input-group">
+
+                                <input type="file" name="postedFile" />
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Short Description</label>
+                            <input type="text" name="ShortNotes" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Main  Description</label>
+                            <input type="text" name="Description" class="form-control">
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" id="btnUpload" class="btn btn-secondary" value="Upload" />
+
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    }
+
+                </div>
+
             </div>
         </div>
     </div>
 </div>
+
+
+<div class="row">
+    @if (Model.Count() > 0)
+    {
+        foreach (var file in Model)
+        {
+            <div class="col-6 col-sm-6 col-lg-6">
+                <div class="card author-box card-primary">
+                    <div class="card-body">
+
+                        <div class="title">@file.Name</div>
+                        <div class="video-frame">
+                            <video id="VideoPlayer" src='@Url.Action("DownloadFile", "Videos", new {fileId = file.Id})' controls="true"
+                                   style="width:100%; height:auto; " loop="true" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+<link rel="stylesheet" href="~/Content/loader.css" />
+
+<div id="resultLoading" style="display: none; width: 100%; height: 100%; position: fixed; z-index: 10000; top: 0px; left: 0px; right: 0px; bottom: 0px; margin: auto;">
+    <div style="width: 340px; height: 200px; text-align: center; position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; margin: auto; z-index: 10; color: rgb(255, 255, 255);">
+        <div class="uil-default-css">
+            <div class="loader">Loading...</div>
+
+        </div>
+        <div class="resultLoading" style="display: block; font-size: 18px; font-weight: 300;">&nbsp;</div>
+    </div>
+    <div style="background: rgb(0, 0, 0); opacity: 0.6; width: 100%; height: 100%; position: absolute; top: 0px;"></div>
+</div>
+<script>
+    var showLoader = function (text) {
+        $('#resultLoading').show();
+        $('#resultLoading').find('.loader-text').html(text);
+    };
+
+    jQuery(document).ready(function () {
+        jQuery(window).on("beforeunload ", function () {
+            showLoader('Loading, please wait...');
+        });
+    });
+
+    $("#loader").fadeOut(1000);
+</script>

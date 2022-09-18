@@ -171,6 +171,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ErrorsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\VideosController.cs" />
@@ -906,6 +907,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\loader.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -988,6 +990,7 @@
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.filedrop.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -1034,11 +1037,9 @@
     <Content Include="Views\videos\Delete.cshtml" />
     <Content Include="Views\videos\Details.cshtml" />
     <Content Include="Views\videos\Edit.cshtml" />
-    <Content Include="Views\vids\Create.cshtml" />
-    <Content Include="Views\vids\Delete.cshtml" />
-    <Content Include="Views\vids\Details.cshtml" />
-    <Content Include="Views\vids\Edit.cshtml" />
-    <Content Include="Views\vids\Index.cshtml" />
+    <Content Include="Views\videos\UploadVideo.cshtml" />
+    <Content Include="Views\Errors\PageNotFound.cshtml" />
+    <Content Include="Views\Errors\UnderDevelopment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\videos\" />

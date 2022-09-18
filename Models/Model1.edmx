@@ -4,41 +4,54 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="nakazaddeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="nakazaddeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Videos">
           <Key>
-            <PropertyRef Name="VideoId" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="VideoId" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
           <Property Name="ShortNotes" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="UserId" Type="int" />
           <Property Name="DatePosted" Type="date" Nullable="false" />
-          <Property Name="Source" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ContentType" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="IsVerified" Type="bit" />
+          <Property Name="Data" Type="varbinary(max)" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityContainer Name="nakazaddeModelStoreContainer">
           <EntitySet Name="Videos" EntityType="Self.Videos" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="nakazaddeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Video">
           <Key>
-            <PropertyRef Name="VideoId" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="VideoId" Type="Int32" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ShortNotes" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserId" Type="Int32" />
           <Property Name="DatePosted" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Source" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IsVerified" Type="Boolean" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ContentType" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Data" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityContainer Name="nakazaddeEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Videos" EntityType="Self.Video" />
+          <FunctionImport Name="spAddNewVideoFile">
+            <Parameter Name="Name" Mode="In" Type="String" />
+            <Parameter Name="FileSize" Mode="In" Type="Int32" />
+            <Parameter Name="FilePath" Mode="In" Type="String" />
+            <Parameter Name="Description" Mode="In" Type="String" />
+            <Parameter Name="ShortNotes" Mode="In" Type="String" />
+            <Parameter Name="DatePosted" Mode="In" Type="DateTime" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spGetAllVideoFile" />
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
@@ -49,12 +62,14 @@
           <EntitySetMapping Name="Videos">
             <EntityTypeMapping TypeName="nakazaddeModel.Video">
               <MappingFragment StoreEntitySet="Videos">
-                <ScalarProperty Name="VideoId" ColumnName="VideoId" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="ContentType" ColumnName="ContentType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="ShortNotes" ColumnName="ShortNotes" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="DatePosted" ColumnName="DatePosted" />
-                <ScalarProperty Name="Source" ColumnName="Source" />
                 <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
               </MappingFragment>
             </EntityTypeMapping>

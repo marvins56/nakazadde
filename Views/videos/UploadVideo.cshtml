@@ -1,0 +1,145 @@
+﻿@*@{
+        ViewBag.Title = "UploadVideo";
+        Layout = "~/Views/Shared/_nakazade.cshtml";
+    }
+
+    <script src="~/scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/scripts/bootstrap.min.js"></script>
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Vertically Centered</h4>
+                </div>
+                <div class="card-body">
+                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#exampleModalCenter">
+                        Vertically
+                        Centered
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="modal fadeIn" id="exampleModalCenter" tabindex="-2" role="dialog"
+             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        @using (Html.BeginForm("UploadVideo", "Videos", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                <label>Choose File:</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" id="fileupload" name="fileupload" class="custom-file-input" />
+                                        <label class="custom-file-label"></label>
+                                    </div>
+                                    <div class="input-group-append">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Short Description</label>
+                                <input type="text" name="ShortNotes" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Main  Description</label>
+                                <input type="text" name="Description" class="form-control">
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" id="btnUpload" class="btn btn-secondary" value="Upload" />
+
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>
+                        }
+
+                    </div>
+                    <div class="modal-footer bg-whitesmoke br">
+                        <button type="button" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-6 col-sm-6 col-lg-6">
+                <div class="card author-box card-primary">
+                    <div class="card-body">
+
+                        <div class="title">@item.Name</div>
+                        <div class="video-frame">
+                            <video style="width:100%; height:auto;" controls preload="auto">
+                                <source src="@Url.Content(@item.FilePath) " type="video/mp4" />
+                            </video>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>*@
+@model IEnumerable<nakazadde.Models.Video>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <style type="text/css">
+        body {
+            font-family: Arial;
+            font-size: 10pt;
+        }
+    </style>
+</head>
+<body>
+    @using (Html.BeginForm("Index", "Videos", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <input type="file" name="postedFile" />
+        <input type="submit" id="btnUpload" value="Upload" />
+    }
+    <hr />
+    <table cellpadding="0" cellspacing="0">
+        @if (Model.Count() > 0)
+        {
+            foreach (var file in Model)
+            {
+                <tr>
+                    <td>
+                        <u>
+                            @file.Name
+                        </u>
+                        <hr />
+                        <video id="VideoPlayer" src='@Url.Action("DownloadFile", "Home", new {fileId = file.Id})' controls="true"
+                               width="400" height="350" loop="true" />
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+</body>
+</html>
+
+
+
+

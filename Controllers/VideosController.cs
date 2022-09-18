@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -11,31 +13,132 @@ using nakazadde.Models;
 
 namespace nakazadde.Controllers
 {
+    [HandleError]
     public class VideosController : Controller
     {
         private nakazaddeEntities db = new nakazaddeEntities();
 
         // GET: Videos
+        //public ActionResult Index()
+        //{
+        //    return View(db.Videos.ToList());
+        //}
+
+        //[HttpGet]
+        //public ActionResult UploadVideo()
+        //{
+        //    List<Video> videolist = new List<Video>();
+        //    string CS = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
+        //    using (SqlConnection con = new SqlConnection(CS))
+        //    {
+        //        SqlCommand cmd = new SqlCommand("spGetAllVideoFile", con);
+        //        cmd.CommandType = CommandType.StoredProcedure;
+        //        con.Open();
+        //        SqlDataReader rdr = cmd.ExecuteReader();
+        //        while (rdr.Read())
+        //        {
+        //            Video video = new Video();
+        //            video.VideoId = Convert.ToInt32(rdr["VideoId"]);
+        //            video.Name = rdr["Name"].ToString();
+        //            video.FileSize = Convert.ToInt32(rdr["FileSize"]);
+        //            video.FilePath = rdr["FilePath"].ToString();
+
+        //            videolist.Add(video);
+        //        }
+        //    }
+        //    return View(videolist);
+        //}
+        //[HttpPost]
+        //public ActionResult UploadVideo([Bind(Include = "VideoId,Description,ShortNotes,UserId,DatePosted,IsVerified")] Video video, HttpPostedFileBase fileupload)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        if (fileupload != null)
+        //     {
+        //        string fileName = Path.GetFileName(fileupload.FileName);
+        //        int fileSize = fileupload.ContentLength;
+        //        int Size = fileSize / 1000;
+        //        fileupload.SaveAs(Server.MapPath("App_Data/videos/" + fileName));
+
+        //        string CS = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
+        //        using (SqlConnection con = new SqlConnection(CS))
+        //        {
+        //            SqlCommand cmd = new SqlCommand("spAddNewVideoFile", con);
+        //            cmd.CommandType = CommandType.StoredProcedure;
+        //            con.Open();
+        //            cmd.Parameters.AddWithValue("@Name", fileName);
+        //            cmd.Parameters.AddWithValue("@Description", video.Description);
+        //            cmd.Parameters.AddWithValue("@ShortNotes", video.ShortNotes);
+        //            cmd.Parameters.AddWithValue("@UserId", 21);
+        //            cmd.Parameters.AddWithValue("@DatePosted", DateTime.Now);
+        //            cmd.Parameters.AddWithValue("@FileSize", Size);
+        //            cmd.Parameters.AddWithValue("FilePath", "App_Data/videos/" + fileName);
+        //            cmd.ExecuteNonQuery();
+        //        }
+        //    }
+        //    }
+        //    return RedirectToAction("UploadVideo");
+        //}
+        //// GET: Videos/Details/5
+        //public ActionResult Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Video video = db.Videos.Find(id);
+        //    if (video == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(video);
+        //}
+        // GET: Home
         public ActionResult Index()
         {
-            return View(db.Videos.ToList());
+           
+            return View(db.Videos.Where(p => p.ContentType == "video/mp4").ToList());
         }
 
-        // GET: Videos/Details/5
-        public ActionResult Details(int? id)
+        [HttpPost]
+        public ActionResult Index([Bind(Include = "Description,ShortNotes,UserId,DatePosted")] Video video, HttpPostedFileBase postedFile)
         {
-            if (id == null)
+            try
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                byte[] bytes;
+                using (BinaryReader br = new BinaryReader(postedFile.InputStream))
+                {
+                    bytes = br.ReadBytes(postedFile.ContentLength);
+                }
+
+                db.Videos.Add(new Video
+                {
+                    Name = Path.GetFileName(postedFile.FileName),
+                    ContentType = postedFile.ContentType,
+                    Data = bytes,
+                    Description = "DESCRIBE",
+                    ShortNotes = "DESCRIBE",
+                    UserId = 2,
+                    DatePosted = DateTime.Now
+
+                });
+                db.SaveChanges();
+            
             }
-            Video video = db.Videos.Find(id);
-            if (video == null)
+            catch(Exception e)
             {
-                return HttpNotFound();
+                TempData["error"] = e.Message;
             }
-            return View(video);
+            return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public FileResult DownloadFile(int? fileId)
+        {
+         
+            Video file = db.Videos.ToList().Find(p => p.Id == fileId.Value);
+            return File(file.Data, file.ContentType, file.Name);
+        }
         // GET: Videos/Create
         public ActionResult Create()
         {
@@ -47,61 +150,18 @@ namespace nakazadde.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "VideoId,Description,ShortNotes,UserId,DatePosted,Source,IsVerified")] Video video, HttpPostedFileBase reportfile)
+        public ActionResult Create([Bind(Include = "VideoId,Description,ShortNotes,UserId,DatePosted,IsVerified,FilePath,FileSize,Name")] Video video)
         {
-            //saving changes           
             if (ModelState.IsValid)
             {
-                try
-                {
-                    //FILE PROCESSING 
-                    if (reportfile.ContentLength > 0)
-                    {
-                        string filename = Path.GetFileName(reportfile.FileName);
-                        string filepath = Path.Combine(Server.MapPath("~/App_Data/videos/"), filename);
-                        video.ShortNotes = reportfile.FileName;
-                        //userReportsTable.Title = filepath;
-                        reportfile.SaveAs(filepath);
-
-                        video.DatePosted = DateTime.Now;
-                        video.UserId = 2;
-                        video.Source = filepath;
-                        db.Videos.Add(video);
-                        db.SaveChanges();
-                        ViewBag.upload = "file uploadded successfully";
-                    }
-            
-                }
-                catch (Exception e)
-                {
-                    TempData["reporterror"] = e.Message;
-                }
-
-                //return RedirectToAction("Index");
+                db.Videos.Add(video);
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
 
             return View(video);
         }
 
-
-        public ActionResult DownloadFile(string fileName)
-        {
-            string fullName = Server.MapPath("~/App_Data/videos/" + fileName);
-
-            byte[] fileBytes = GetFile(fullName);
-            return File(
-                fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
-        }
-
-        byte[] GetFile(string s)
-        {
-            System.IO.FileStream fs = System.IO.File.OpenRead(s);
-            byte[] data = new byte[fs.Length];
-            int br = fs.Read(data, 0, data.Length);
-            if (br != fs.Length)
-                throw new System.IO.IOException(s);
-            return data;
-        }
         // GET: Videos/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -122,7 +182,7 @@ namespace nakazadde.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "VideoId,Description,ShortNotes,UserId,DatePosted,Source,IsVerified")] Video video)
+        public ActionResult Edit([Bind(Include = "VideoId,Description,ShortNotes,UserId,DatePosted,IsVerified,FilePath,FileSize,Name")] Video video)
         {
             if (ModelState.IsValid)
             {
