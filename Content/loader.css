@@ -1,6 +1,6 @@
-﻿/*.loader,
-.loader:before,
-.loader:after {
+﻿/*.loader1,
+.loader1:before,
+.loader1:after {
     border-radius: 50%;
     width: 2.5em;
     height: 2.5em;
@@ -10,8 +10,8 @@
     animation: load7 1.8s infinite ease-in-out;
 }
 
-.loader {
-    color: #ffffff;
+.loader1 {
+    color: black;
     font-size: 10px;
     margin: 80px auto;
     position: relative;
@@ -23,20 +23,20 @@
     animation-delay: -0.16s;
 }
 
-    .loader:before,
-    .loader:after {
+    .loader1:before,
+    .loader1:after {
         content: '';
         position: absolute;
         top: 0;
     }
 
-    .loader:before {
+    .loader1:before {
         left: -3.5em;
         -webkit-animation-delay: -0.32s;
         animation-delay: -0.32s;
     }
 
-    .loader:after {
+    .loader1:after {
         left: 3.5em;
     }
 
@@ -60,9 +60,9 @@
     }
 }
 */
-.loader,
-.loader:before,
-.loader:after {
+.loader1,
+.loader1:before,
+.loader1:after {
     background: #ffffff;
     -webkit-animation: load1 1s infinite ease-in-out;
     animation: load1 1s infinite ease-in-out;
@@ -70,7 +70,7 @@
     height: 4em;
 }
 
-.loader {
+.loader1 {
     color: #ffffff;
     text-indent: -9999em;
     margin: 88px auto;
@@ -83,20 +83,20 @@
     animation-delay: -0.16s;
 }
 
-    .loader:before,
-    .loader:after {
+    .loader1:before,
+    .loader1:after {
         position: absolute;
         top: 0;
         content: '';
     }
 
-    .loader:before {
+    .loader1:before {
         left: -1.5em;
         -webkit-animation-delay: -0.32s;
         animation-delay: -0.32s;
     }
 
-    .loader:after {
+    .loader1:after {
         left: 1.5em;
     }
 

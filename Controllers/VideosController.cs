@@ -96,7 +96,6 @@ namespace nakazadde.Controllers
         // GET: Home
         public ActionResult Index()
         {
-           
             return View(db.Videos.Where(p => p.ContentType == "video/mp4").ToList());
         }
 

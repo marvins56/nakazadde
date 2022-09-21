@@ -1,0 +1,249 @@
+﻿@model nakazadde.Models.product
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_nakazade.cshtml";
+}
+
+<div class="row">
+    <div class="col-12 col-md-12 col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="text-center text-uppercase"> @Html.DisplayFor(model => model.productName) </h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="list-group" id="list-tab" role="tablist">
+                            <a class="list-group-item list-group-item-action active" id="list-home-list"
+                               data-toggle="list" href="#list-home" role="tab">PRODUCT </a>
+                            <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
+                               href="#list-profile" role="tab">DESCRIPTION</a>
+
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="list-home" role="tabpanel"
+                                 aria-labelledby="list-home-list">
+
+                                @Html.Partial("produtspartial")
+
+                            </div>
+                            <div class="tab-pane fade" id="list-profile" role="tabpanel"
+                                 aria-labelledby="list-profile-list">
+                                @Html.DisplayNameFor(model => model.Description) <br />
+                                @Html.DisplayFor(model => model.Description)<br />
+                           
+                                <div class="card-body">
+                                    <div class="card-body">
+                                        <a href="#" class="btn btn-outline-primary">
+                                            UGX -  @Html.DisplayFor(model => model.price)
+                                        </a> <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                     data-target=".bd-example-modal-lg">
+                                            CHECKOUT
+                                        </button>
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+    <!-- Large modal -->
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+         aria-hidden="true" style="">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myLargeModalLabel">..</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>DELIVERY INFORMATION</h4>
+                                </div>
+                                @using (Html.BeginForm("Create", "orders", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label>Full Name *</label>
+                                            <input type="text" class="form-control" name="name" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>District *</label>
+                                            <input type="text" class="form-control" value="Mukono" name="district" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Gender</label>
+                                            <div>
+                                                <input type="radio" name="gender" value="Female" checked /> <span>Female</span>
+                                                <input type="radio" name="gender" value="Male" /> <span>Male</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Address *</label>
+                                            <input type="text" class="form-control" required placeholder="Hostel, Apartment, etc" name="address">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Phone Number (UG Format) *</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        <i class="fas fa-phone"></i>
+                                                    </div>
+                                                </div>
+                                                <input type="tel" required class="form-control phone-number" name="phone">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Personal Email *</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        <i class="fas fa-envelope"></i>
+                                                    </div>
+                                                </div>
+                                                <input type="email" required class="form-control pwstrength" data-indicator="pwindicator" name="email">
+                                            </div>
+                                            <div id="pwindicator" class="pwindicator">
+                                                <div class="bar"></div>
+                                                <div class="label"></div>
+                                            </div>
+                                        </div>
+                                        <input type="submit" class="btn btn-primary" value=" Complete Order" />
+
+
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <div class="card bg-pink">
+                                <div class="card-header">
+                                    <h4>ORDER DETAILS</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="product" value="@Model.productName" readonly>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Total Amount</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    UGX
+                                                </div>
+                                            </div>
+                                            <input type="text" class="form-control currency" value="@Model.price" name="total" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="pricing pricing-highlight text-black-50">
+                                        <div class="pricing-title mt-1 p-2">
+                                            SUPPORTED PAYMENT PLANS
+                                        </div>
+                                        <div class="pricing-padding">
+
+                                            <div class="pricing-details">
+                                                <div class="pricing-item">
+                                                    <div class="pricing-item-icon"><i class="fas fa-check"></i></div>
+                                                    <div class="pricing-item-label">MTN MOBILE-MONEY</div>
+                                                </div>
+                                                <div class="pricing-item">
+                                                    <div class="pricing-item-icon"><i class="fas fa-check"></i></div>
+                                                    <div class="pricing-item-label">AIRTEL MOBILE-MONEY</div>
+                                                </div>
+                                                <div class="pricing-item">
+                                                    <div class="pricing-item-icon"><i class="fas fa-check"></i></div>
+                                                    <div class="pricing-item-label">VISA CARDS</div>
+                                                </div>
+                                                <div class="pricing-item">
+                                                    <div class="pricing-item-icon bg-danger text-white"><i class="fas fa-times"></i></div>
+                                                    <div class="pricing-item-label">GOOGLE PAY</div>
+                                                </div>
+                                                <div class="pricing-item">
+                                                    <div class="pricing-item-icon bg-danger text-white"><i class="fas fa-times"></i></div>
+                                                    <div class="pricing-item-label">APPLE PAY</div>
+                                                </div>
+
+
+                                                <div class="alert alert-warning mb-2 p-1" role="alert">
+                                                    SUBMIT DELIVERY DETAILS BEFORE MAKING PAYMENTS
+                                                </div>
+                                                <button type="button" class="btn btn-primary" onClick="payWithRave()">
+                                                    PROCESS PAYMENT
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Small Modal -->
+
+
+<script type="text/javascript" src="https://ravesandboxapi.flutterwave.com/flwv3-pug/getpaidx/api/flwpbf-inline.js"></script>
+
+<script>
+    const API_publicKey = "<FLWPUBK-40a576cbe899c331b014a4b27781afaf-X>";
+    function getRndInteger(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+    function payWithRave() {
+        var x = getpaidSetup({
+            PBFPubKey: API_publicKey,
+            customer_email: "okmarvins@gmail.com",
+            amount: 1000,
+            customer_phone: "773603206",
+            currency: "UGX",
+           /* payment_method: "MobileMoney",*/
+            txref: getRndInteger(1,100) ,
+            
+            onclose: function () { },
+            callback: function (response) {
+                var txref = response.tx.txRef; // collect flwRef returned and pass to a                                         server page to complete status check.
+                console.log("This is the response returned after a charge", response);
+                if (
+                        response.tx.chargeResponseCode == "00" ||
+                        response.tx.chargeResponseCode == "0"
+                    ) {
+                        // redirect to a success page
+  window.location.replace("@Url.Action("Validate", new { TransactionId = "rave-123456" })");
+                    } else {
+                        // redirect to a failure page.
+
+  window.location.replace("@Url.Action("Validate", new { TransactionId = "rave-123456" })");
+                    }
+
+                x.close(); // use this to close the modal immediately after payment.
+            }
+        });
+    }
+</script>

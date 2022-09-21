@@ -12,8 +12,6 @@ namespace nakazadde.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    using System.Data.Entity.Core.Objects;
-    using System.Linq;
     
     public partial class nakazaddeEntities : DbContext
     {
@@ -28,43 +26,7 @@ namespace nakazadde.Models
         }
     
         public virtual DbSet<Video> Videos { get; set; }
-    
-        public virtual int spAddNewVideoFile(string name, Nullable<int> fileSize, string filePath, string description, string shortNotes, Nullable<System.DateTime> datePosted, Nullable<int> userId)
-        {
-            var nameParameter = name != null ?
-                new ObjectParameter("Name", name) :
-                new ObjectParameter("Name", typeof(string));
-    
-            var fileSizeParameter = fileSize.HasValue ?
-                new ObjectParameter("FileSize", fileSize) :
-                new ObjectParameter("FileSize", typeof(int));
-    
-            var filePathParameter = filePath != null ?
-                new ObjectParameter("FilePath", filePath) :
-                new ObjectParameter("FilePath", typeof(string));
-    
-            var descriptionParameter = description != null ?
-                new ObjectParameter("Description", description) :
-                new ObjectParameter("Description", typeof(string));
-    
-            var shortNotesParameter = shortNotes != null ?
-                new ObjectParameter("ShortNotes", shortNotes) :
-                new ObjectParameter("ShortNotes", typeof(string));
-    
-            var datePostedParameter = datePosted.HasValue ?
-                new ObjectParameter("DatePosted", datePosted) :
-                new ObjectParameter("DatePosted", typeof(System.DateTime));
-    
-            var userIdParameter = userId.HasValue ?
-                new ObjectParameter("UserId", userId) :
-                new ObjectParameter("UserId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spAddNewVideoFile", nameParameter, fileSizeParameter, filePathParameter, descriptionParameter, shortNotesParameter, datePostedParameter, userIdParameter);
-        }
-    
-        public virtual int spGetAllVideoFile()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetAllVideoFile");
-        }
+        public virtual DbSet<product> products { get; set; }
+        public virtual DbSet<order> orders { get; set; }
     }
 }

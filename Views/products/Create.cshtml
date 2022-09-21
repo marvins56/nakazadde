@@ -1,0 +1,64 @@
+﻿@model nakazadde.Models.product
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_nakazade.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-12">
+     
+        <div class="card">
+            <div class="card-header">
+                <h4>Upload product</h4>
+            </div>
+            @using (Html.BeginForm("Create", "products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="card-body">
+                    <div class="form-group row mb-4">
+                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">product Name</label>
+                        <div class="col-sm-12 col-md-7">
+                            <input type="text" name="productName" class="form-control">
+                            @Html.ValidationMessageFor(model => model.productName, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">product description</label>
+                        <div class="col-sm-12 col-md-7">
+                            <input type="text" name="Description" class="form-control">
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">product price</label>
+                        <div class="col-sm-12 col-md-7">
+                            <input type="number" name="price" class="form-control">
+                            @Html.ValidationMessageFor(model => model.price, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Product image</label>
+                             
+                                <input type="file" name="filepatz" id="image-upload" />
+                    </div>
+
+                    <div class="form-group row mb-4">
+                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
+                        <div class="col-sm-12 col-md-7">
+                    <input type="submit" class="btn btn-primary" value="UPLOAD" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        </div>
+    </div>
+
+

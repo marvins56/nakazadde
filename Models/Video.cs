@@ -14,14 +14,14 @@ namespace nakazadde.Models
     
     public partial class Video
     {
+        public int Id { get; set; }
         public string Description { get; set; }
         public string ShortNotes { get; set; }
         public Nullable<int> UserId { get; set; }
         public System.DateTime DatePosted { get; set; }
-        public Nullable<bool> IsVerified { get; set; }
-        public string Name { get; set; }
-        public int Id { get; set; }
         public string ContentType { get; set; }
+        public Nullable<bool> IsVerified { get; set; }
         public byte[] Data { get; set; }
+        public string Name { get; set; }
     }
 }
