@@ -15,10 +15,10 @@ namespace nakazadde.Models
     public partial class product
     {
         public int id { get; set; }
-        public string productName { get; set; }
+        public string Title { get; set; }
         public string Description { get; set; }
         public int price { get; set; }
-        public string filepatz { get; set; }
-        public string path { get; set; }
+        public byte[] Data { get; set; }
+        public string ContentType { get; set; }
     }
 }

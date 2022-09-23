@@ -5,22 +5,79 @@
     Layout = "~/Views/Shared/_nakazade.cshtml";
 }
 
-<div class="col-12 col-md-12 col-lg-12">
-    <div class="card">
-        <div class="card-header">
-            <h4> UPLOAD PRODUCT</h4>
+
+<div class="row">
+    <div class="col-12 col-md-12 col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4> UPLOAD PRODUCT</h4>
+            </div>
+            <div class="card-body">
+                <button type="button" class="btn btn-primary" data-toggle="modal"
+                        data-target="#exampleModalCenter">
+                    UPLOAD PRODUCT
+                </button>
+            </div>
         </div>
-        <div class="card-body">
-            <span type="button" class="btn btn-outline-primary text-black-50" >
-                @Html.ActionLink("UPLOAD", "Create")
-            </span>
+    </div>
+
+    <div class="modal fadeIn" id="exampleModalCenter" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">PRODUCT UPLOAD </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @using (Html.BeginForm("Index", "products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="card-body">
+                            <div class="form-group row mb-4">
+                                <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">product Name</label>
+                                <div class="col-sm-12 col-md-7">
+                                    <input type="text" name="Title" class="form-control">
+
+                                </div>
+                            </div>
+                            <div class="form-group row mb-4">
+                                <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">product description</label>
+                                <div class="col-sm-12 col-md-7">
+                                    <input type="text" name="Description" class="form-control">
+
+                                </div>
+                            </div>
+                            <div class="form-group row mb-4">
+                                <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">product price</label>
+                                <div class="col-sm-12 col-md-7">
+                                    <input type="number" name="price" class="form-control">
+
+                                </div>
+                            </div>
+                            <div class="form-group row mb-4">
+                                <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Product image</label>
+
+                                <input type="file" name="postedFile" />
+                            </div>
+
+                            <div class="form-group row mb-4">
+                                <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
+                                <div class="col-sm-12 col-md-7">
+                                    <input type="submit" class="btn btn-primary" value="UPLOAD" />
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+
+            </div>
         </div>
     </div>
 </div>
-
-<p>
-   
-</p>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
 
 <div class="row">
@@ -32,24 +89,27 @@
 
                 </div>
                 <div class="card-body">
-                    <img src="@Url.Content((item.path))" class=" img-responsive img-fluid" alt="image goes here" />
 
-                    <br />
-                    PRODUCT - @Html.DisplayFor(modelItem => item.productName)
+                    <img src='@Url.Action("DownloadFile", "products", new {fileId = item.id})' class="img-responsive img-fluid" style="border-radius:5px;" />
+
+                    <br /> <br />
+                    PRODUCT - @Html.DisplayFor(modelItem => item.Title)
                     <br />
                     PRICE - @Html.DisplayFor(modelItem => item.price)
+                    <div class="card-footer">
+                        <a href="#" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
+                           title="Add To Chart">
+                            Add to cart
+                        </a>
+                        |
+                        <a href="@Url.Action("Details", "products", new { id = item.id })" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
+                           title="View Details + checkout">
+                            Checkout
+                        </a>
+                    </div>
                 </div>
-                <div class="card-footer">
-                    <a href="#" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
-                       title="Add To Chart">
-                        Add to cart
-                    </a>
-                    |
-                    <a href="@Url.Action("Details", "products", new { id = item.id })" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
-                       title="View Details + checkout">
-                        Checkout
-                    </a>
-                </div>
+                
+               
             </div>
         </div>
 

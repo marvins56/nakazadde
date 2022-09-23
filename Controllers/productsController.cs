@@ -16,11 +16,49 @@ namespace nakazadde.Controllers
     {
         private nakazaddeEntities db = new nakazaddeEntities();
 
-        // GET: products
+        
         public ActionResult Index()
         {
             return View(db.products.ToList());
         }
+        [HttpPost]
+        public ActionResult Index([Bind(Include = "id,Title,Description,price,Data,ContentType")] product productmodel, HttpPostedFileBase postedFile)
+        {
+            try
+            {
+                byte[] bytes;
+                using (BinaryReader br = new BinaryReader(postedFile.InputStream))
+                {
+                    bytes = br.ReadBytes(postedFile.ContentLength);
+                }
+
+                db.products.Add(new product
+                {
+                    Title = productmodel.Title,
+                    ContentType = postedFile.ContentType,
+                    Data = bytes,
+                    Description = productmodel.Description,
+                    price = productmodel.price 
+                });
+                db.SaveChanges();
+
+            }
+            catch (Exception e)
+            {
+                TempData["error"] = e.Message;
+            }
+            return RedirectToAction("Index");
+        }
+        [HttpGet]
+        public FileResult DownloadFile(int? fileId)
+        {
+
+            product file = db.products.ToList().Find(p => p.id == fileId.Value);
+            return File(file.Data, file.ContentType);
+        }
+
+
+
 
         // GET: products/Details/5
         public ActionResult Details(int? id)
@@ -36,64 +74,9 @@ namespace nakazadde.Controllers
             }
             return View(products);
         }
-
-        // GET: products/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,productName,Description,price,filepatz,path")] product products, HttpPostedFileBase filepatz)
-        {
-            //saving changes           
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    //FILE PROCESSING 
-                    if (filepatz.ContentLength > 0)
-                    {
-                        string filename = Path.GetFileName(filepatz.FileName);
-                        string filepath ="~/App_Data/images/" + filename;
-                        products.filepatz = filepatz.FileName;
-                        products.path = filepath;
-                        filepatz.SaveAs(Server.MapPath(filepath));
-
-                    }
-
-                    db.products.Add(products);
-                    db.SaveChanges();
-                    ViewBag.upload = "report uploadded successfully";
-
-                }
-                catch (DbEntityValidationException e)
-                {
-                    foreach (var eve in e.EntityValidationErrors)
-                    {
-                        Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
-                            eve.Entry.Entity.GetType().Name, eve.Entry.State);
-                        foreach (var ve in eve.ValidationErrors)
-                        {
-                            Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
-                                ve.PropertyName, ve.ErrorMessage);
-                        }
-                    }
-                    throw;
-                }
+      
 
 
-           return RedirectToAction("Index");
-            }
-
-            return View(products);
-        }
-
-        // GET: products/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -108,12 +91,9 @@ namespace nakazadde.Controllers
             return View(product);
         }
 
-        // POST: products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,productName,Description,price,filepath")] product product)
+        public ActionResult Edit([Bind(Include = "id,Title,Description,price,Data,ContentType")] product product)
         {
             if (ModelState.IsValid)
             {
@@ -124,7 +104,6 @@ namespace nakazadde.Controllers
             return View(product);
         }
 
-        // GET: products/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -139,7 +118,7 @@ namespace nakazadde.Controllers
             return View(product);
         }
 
-        // POST: products/Delete/5
+      
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -158,5 +137,20 @@ namespace nakazadde.Controllers
             }
             base.Dispose(disposing);
         }
+    }
+    public class Item
+    {
+        public product Product
+        {
+            get;
+            set;
+        }
+
+        public int Quantity
+        {
+            get;
+            set;
+        }
+
     }
 }

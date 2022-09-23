@@ -1,4 +1,3 @@
 ﻿@model nakazadde.Models.product
 
-
-<img src="@Url.Content(Model.path)" class="img-fluid" />
+<img src='@Url.Action("DownloadFile", "products", new {fileId = Model.id})' class="img-responsive img-fluid" style="border-radius:5px; width:60%;" />

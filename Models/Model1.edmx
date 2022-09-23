@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="nakazaddeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="nakazaddeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="orders">
           <Key>
             <PropertyRef Name="Id" />
@@ -27,11 +27,11 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="productName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
           <Property Name="price" Type="int" Nullable="false" />
-          <Property Name="filepatz" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="path" Type="nvarchar(max)" />
+          <Property Name="Data" Type="varbinary(max)" Nullable="false" />
+          <Property Name="ContentType" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Videos">
           <Key>
@@ -52,40 +52,11 @@
           <EntitySet Name="products" EntityType="Self.products" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Videos" EntityType="Self.Videos" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="nakazaddeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Video">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ShortNotes" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UserId" Type="Int32" />
-          <Property Name="DatePosted" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="ContentType" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="IsVerified" Type="Boolean" />
-          <Property Name="Data" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-        </EntityType>
-        <EntityContainer Name="nakazaddeEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Videos" EntityType="Self.Video" />
-          <EntitySet Name="products" EntityType="nakazaddeModel.product" />
-          <EntitySet Name="orders" EntityType="nakazaddeModel.order" />
-        </EntityContainer>
-        <EntityType Name="product">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="productName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="price" Type="Int32" Nullable="false" />
-          <Property Name="filepatz" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="path" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="order">
           <Key>
             <PropertyRef Name="Id" />
@@ -103,12 +74,72 @@
           <Property Name="paymentstatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="DateOfTransaction" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="product">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="price" Type="Int32" Nullable="false" />
+          <Property Name="Data" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="ContentType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Video">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ShortNotes" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="DatePosted" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ContentType" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsVerified" Type="Boolean" />
+          <Property Name="Data" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="nakazaddeEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="orders" EntityType="Self.order" />
+          <EntitySet Name="products" EntityType="Self.product" />
+          <EntitySet Name="Videos" EntityType="Self.Video" />
+        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="nakazaddeModelStoreContainer" CdmEntityContainer="nakazaddeEntities">
+          <EntitySetMapping Name="orders">
+            <EntityTypeMapping TypeName="nakazaddeModel.order">
+              <MappingFragment StoreEntitySet="orders">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="gender" ColumnName="gender" />
+                <ScalarProperty Name="district" ColumnName="district" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="productName" ColumnName="productName" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="paymentstatus" ColumnName="paymentstatus" />
+                <ScalarProperty Name="DateOfTransaction" ColumnName="DateOfTransaction" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="products">
+            <EntityTypeMapping TypeName="nakazaddeModel.product">
+              <MappingFragment StoreEntitySet="products">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="ContentType" ColumnName="ContentType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Videos">
             <EntityTypeMapping TypeName="nakazaddeModel.Video">
               <MappingFragment StoreEntitySet="Videos">
@@ -121,36 +152,6 @@
                 <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
                 <ScalarProperty Name="Data" ColumnName="Data" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="products">
-            <EntityTypeMapping TypeName="nakazaddeModel.product">
-              <MappingFragment StoreEntitySet="products">
-                <ScalarProperty Name="path" ColumnName="path" />
-                <ScalarProperty Name="filepatz" ColumnName="filepatz" />
-                <ScalarProperty Name="price" ColumnName="price" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="productName" ColumnName="productName" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="orders">
-            <EntityTypeMapping TypeName="nakazaddeModel.order">
-              <MappingFragment StoreEntitySet="orders">
-                <ScalarProperty Name="DateOfTransaction" ColumnName="DateOfTransaction" />
-                <ScalarProperty Name="paymentstatus" ColumnName="paymentstatus" />
-                <ScalarProperty Name="price" ColumnName="price" />
-                <ScalarProperty Name="productName" ColumnName="productName" />
-                <ScalarProperty Name="userid" ColumnName="userid" />
-                <ScalarProperty Name="address" ColumnName="address" />
-                <ScalarProperty Name="district" ColumnName="district" />
-                <ScalarProperty Name="gender" ColumnName="gender" />
-                <ScalarProperty Name="phone" ColumnName="phone" />
-                <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

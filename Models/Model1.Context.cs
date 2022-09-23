@@ -25,8 +25,8 @@ namespace nakazadde.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Video> Videos { get; set; }
-        public virtual DbSet<product> products { get; set; }
         public virtual DbSet<order> orders { get; set; }
+        public virtual DbSet<product> products { get; set; }
+        public virtual DbSet<Video> Videos { get; set; }
     }
 }
