@@ -11,10 +11,12 @@ namespace nakazadde.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Web.Mvc;
+
     public partial class Video
     {
         public int Id { get; set; }
+        [AllowHtml]
         public string Description { get; set; }
         public string ShortNotes { get; set; }
         public Nullable<int> UserId { get; set; }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -18,82 +19,6 @@ namespace nakazadde.Controllers
     {
         private nakazaddeEntities db = new nakazaddeEntities();
 
-        // GET: Videos
-        //public ActionResult Index()
-        //{
-        //    return View(db.Videos.ToList());
-        //}
-
-        //[HttpGet]
-        //public ActionResult UploadVideo()
-        //{
-        //    List<Video> videolist = new List<Video>();
-        //    string CS = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
-        //    using (SqlConnection con = new SqlConnection(CS))
-        //    {
-        //        SqlCommand cmd = new SqlCommand("spGetAllVideoFile", con);
-        //        cmd.CommandType = CommandType.StoredProcedure;
-        //        con.Open();
-        //        SqlDataReader rdr = cmd.ExecuteReader();
-        //        while (rdr.Read())
-        //        {
-        //            Video video = new Video();
-        //            video.VideoId = Convert.ToInt32(rdr["VideoId"]);
-        //            video.Name = rdr["Name"].ToString();
-        //            video.FileSize = Convert.ToInt32(rdr["FileSize"]);
-        //            video.FilePath = rdr["FilePath"].ToString();
-
-        //            videolist.Add(video);
-        //        }
-        //    }
-        //    return View(videolist);
-        //}
-        //[HttpPost]
-        //public ActionResult UploadVideo([Bind(Include = "VideoId,Description,ShortNotes,UserId,DatePosted,IsVerified")] Video video, HttpPostedFileBase fileupload)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (fileupload != null)
-        //     {
-        //        string fileName = Path.GetFileName(fileupload.FileName);
-        //        int fileSize = fileupload.ContentLength;
-        //        int Size = fileSize / 1000;
-        //        fileupload.SaveAs(Server.MapPath("App_Data/videos/" + fileName));
-
-        //        string CS = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
-        //        using (SqlConnection con = new SqlConnection(CS))
-        //        {
-        //            SqlCommand cmd = new SqlCommand("spAddNewVideoFile", con);
-        //            cmd.CommandType = CommandType.StoredProcedure;
-        //            con.Open();
-        //            cmd.Parameters.AddWithValue("@Name", fileName);
-        //            cmd.Parameters.AddWithValue("@Description", video.Description);
-        //            cmd.Parameters.AddWithValue("@ShortNotes", video.ShortNotes);
-        //            cmd.Parameters.AddWithValue("@UserId", 21);
-        //            cmd.Parameters.AddWithValue("@DatePosted", DateTime.Now);
-        //            cmd.Parameters.AddWithValue("@FileSize", Size);
-        //            cmd.Parameters.AddWithValue("FilePath", "App_Data/videos/" + fileName);
-        //            cmd.ExecuteNonQuery();
-        //        }
-        //    }
-        //    }
-        //    return RedirectToAction("UploadVideo");
-        //}
-        //// GET: Videos/Details/5
-        //public ActionResult Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Video video = db.Videos.Find(id);
-        //    if (video == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(video);
-        //}
-        // GET: Home
         public ActionResult Index()
         {
             return View(db.Videos.Where(p => p.ContentType == "video/mp4").ToList());
@@ -115,8 +40,8 @@ namespace nakazadde.Controllers
                     Name = Path.GetFileName(postedFile.FileName),
                     ContentType = postedFile.ContentType,
                     Data = bytes,
-                    Description = "DESCRIBE",
-                    ShortNotes = "DESCRIBE",
+                    Description = video.Description,
+                    ShortNotes = video.ShortNotes,
                     UserId = 2,
                     DatePosted = DateTime.Now
 
@@ -124,9 +49,19 @@ namespace nakazadde.Controllers
                 db.SaveChanges();
             
             }
-            catch(Exception e)
+            catch (DbEntityValidationException e)
             {
-                TempData["error"] = e.Message;
+                foreach (var eve in e.EntityValidationErrors)
+                {
+                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+                throw;
             }
             return RedirectToAction("Index");
         }
@@ -176,9 +111,7 @@ namespace nakazadde.Controllers
             return View(video);
         }
 
-        // POST: Videos/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "VideoId,Description,ShortNotes,UserId,DatePosted,IsVerified,FilePath,FileSize,Name")] Video video)
@@ -207,7 +140,7 @@ namespace nakazadde.Controllers
             return View(video);
         }
 
-        // POST: Videos/Delete/5
+    
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -217,7 +150,19 @@ namespace nakazadde.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Video viddetails = db.Videos.Find(id);
+            if (viddetails == null)
+            {
+                return HttpNotFound();
+            }
+            return View(viddetails);
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

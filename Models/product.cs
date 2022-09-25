@@ -11,11 +11,13 @@ namespace nakazadde.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Web.Mvc;
+
     public partial class product
     {
         public int id { get; set; }
         public string Title { get; set; }
+        [AllowHtml]
         public string Description { get; set; }
         public int price { get; set; }
         public byte[] Data { get; set; }

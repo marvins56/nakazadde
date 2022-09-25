@@ -363,6 +363,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModel\Cart.cs" />
     <Compile Include="ViewModel\ordersvm.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -19,7 +19,10 @@
     <link rel="stylesheet" href="~/assets/css/custom.css">
     <link rel='shortcut icon' type='image/x-icon' href='~/assets/img/favicon.ico' />
     <link rel="stylesheet" href="~/assets/bundles/bootstrap-social/bootstrap-social.css">
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/assets/bundles/summernote/summernote-bs4.css">
+    <link rel="stylesheet" href="~/assets/bundles/jquery-selectric/selectric.css">
+    <link rel="stylesheet" href="~/assets/bundles/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
     @Scripts.Render("~/bundles/modernizr")
 </head>
 
@@ -59,10 +62,11 @@
                     <li class="dropdown dropdown-list-toggle">
                         <a href="#" data-toggle="dropdown"
                            class="nav-link nav-link-lg message-toggle">
-                            <i data-feather="video"></i>
-                            <span class="badge headerBadge1">
-                                4
-                            </span>
+                            <i class="fa-solid fa-cart-shopping-fast">
+                                <span class="badge headerBadge1" id="Count">
+
+                                </span>
+                            </i>
                         </a>
                         <div class="dropdown-menu dropdown-list dropdown-menu-right pullDown">
                             <div class="dropdown-header">
@@ -231,7 +235,7 @@
                             <a href="@Url.Action("index","videos")" class="blank.php"><i class="fa fa-home" style="font-size:25px;"></i><span>Home</span></a>
                         </li>
                         <li class="dropdown">
-                            <a href="@Url.Action("notifications","videos")" class="blank.php"><i class="fa fa-bell" style="font-size:25px;"></i><span>Notifications</span></a>
+                            <a href="@Url.Action("UnderDevelopment","Errors")" class="blank.php"><i class="fa fa-bell" style="font-size:25px;"></i><span>Notifications</span></a>
                         </li>
                         <ul class="dropdown-menu">
                             <li><a class="blank.php" href="@Url.Action("UnderDevelopment","Errors")">Chart Widgets</a></li>
@@ -435,10 +439,66 @@
     <script src="~/assets/js/scripts.js"></script>
     <!-- Custom JS File -->
     <script src="~/assets/js/custom.js"></script>
-   
+    <script src="~/assets/bundles/summernote/summernote-bs4.js"></script>
+    <script src="~/assets/bundles/jquery-selectric/jquery.selectric.min.js"></script>
+    <script src="~/assets/bundles/upload-preview/assets/js/jquery.uploadPreview.min.js"></script>
+    <script src="~/assets/js/page/create-post.js"></script>
+    <script src="~/assets/bundles/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
 
+        function addtocart(pid) {
+        $.ajax({
+            url: "@Url.Action("AddToCart","products")",
+            type: "POST",
+            data: { 'id': pid },
+            dataType: "json",
+            success: function () {
+                swal({
+                    title: "SUCCESS",
+                    text: "ADDED SUCCESSFULLY",
+                    icon: "success"
+                })
+            },
+            error: function () {
+                swal({
+                    title: "ERROR",
+                    text: "OPERATION FAILED",
+                    icon: "error"
+                })
+            },
+        });
+        }
+    </script>
+    <script>
+
+        function productdetails(pid) {
+        $.ajax({
+            url: "@Url.Action("response","products")",
+            type: "GET",
+            data: { 'id': pid },
+            dataType: "json",
+            success: function () {
+                swal({
+                    title: "product details",
+                    text: "@TempData["details"]",
+                    icon: "success"
+                })
+            },
+            error: function () {
+                swal({
+                    title: "ERROR",
+                    text: "OPERATION FAILED",
+                    icon: "error"
+                })
+            },
+        });
+    }
+
+    </script>
     @RenderSection("scripts", required: false)
 </body>
+
 
 
 <!-- light-gallery.html  21 Nov 2019 04:04:37 GMT -->

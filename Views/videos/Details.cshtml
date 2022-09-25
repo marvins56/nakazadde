@@ -5,79 +5,56 @@
     Layout = "~/Views/Shared/_nakazade.cshtml";
 }
 
-<h2>Details</h2>
 
-<div>
-    <h4>Video</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
+<div class="row">
+    <div class="col-12 col-md-12 col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="text-center text-uppercase"> @Html.DisplayFor(model => model.Name) </h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="list-group" id="list-tab" role="tablist">
+                            <a class="list-group-item list-group-item-action active" id="list-home-list"
+                               data-toggle="list" href="#list-home" role="tab">VIDEO </a>
+                            <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
+                               href="#list-profile" role="tab">MORE INFOMATION</a>
 
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade show active align-center" id="list-home" role="tabpanel"
+                                 aria-labelledby="list-home-list">
+                                <div class="video-frame">
+                                    <video id="VideoPlayer" src='@Url.Action("DownloadFile", "Videos", new {fileId = Model.Id})' controls="true"
+                                           style="width:100%; height:auto; " loop="true" />
+                                </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ShortNotes)
-        </dt>
+                            </div>
+                            <div class="tab-pane fade" id="list-profile" role="tabpanel"
+                                 aria-labelledby="list-profile-list">
+                                OVERVIEW <br />
+                                @Html.DisplayFor(model => model.ShortNotes) <br />
+                             
+                                <div class="card-footer">
 
-        <dd>
-            @Html.DisplayFor(model => model.ShortNotes)
-        </dd>
+                                    @Html.DisplayFor(model => model.Description)
+                                    <br />
+                                    <p class="text-success">DATE POSTED:    @Html.DisplayFor(model => model.DatePosted)</p>
+                                    BY: <p class="text-success"> @Html.DisplayFor(model => model.UserId)</p>
+                                </div>
+                                <div class="card-body text-center">
 
-        <dt>
-            @Html.DisplayNameFor(model => model.UserId)
-        </dt>
+                                    @Html.ActionLink("Back", "Index")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.UserId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DatePosted)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DatePosted)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IsVerified)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IsVerified)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FilePath)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FilePath)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FileSize)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FileSize)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-    </dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.VideoId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
